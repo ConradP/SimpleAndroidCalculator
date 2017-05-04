@@ -1,6 +1,6 @@
 package com.example.conradp.sscalculator;
 
-import android.widget.EditText;
+import android.widget.TextView;
 
 import org.mariuszgromada.math.mxparser.Expression;
 
@@ -9,31 +9,37 @@ import org.mariuszgromada.math.mxparser.Expression;
  */
 
 class Calculator {
-    private EditText display;
+    private TextView display;
 
-    public Calculator setDisplay(EditText display){
+    Calculator setDisplay(TextView display) {
         this.display = display;
         return this;
     }
 
-    public void clearDisplay(){
-        display.setText("");
+    void clearDisplay() {
+        display.setText("0");
     }
 
-    public void calculate(){
+    void calculate() {
         //TODO: parse text in the display into equation.
         double result = new Expression(display.getText().toString()).calculate();
         display.setText(Double.toString(result));
+        if (result == Double.NaN) {
+            ErrorNotify();
+        }
     }
 
 
-    private void ErrorNotify(){
+    private void ErrorNotify() {
         display.setText('E');
     }
 
-    public void sendString(String text) {
-        if (text.length()>1) ErrorNotify();
-        else display.setText(display.getText()+text);
+    void sendString(String text) {
+        if (display.getText().toString().equals("0")) {
+            display.setText(text);
+        } else {
+            display.setText(display.getText() + text);
+        }
     }
 }
 
